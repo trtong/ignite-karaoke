@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 
+var keys_to_begin = [13, 27, 33, 34]; // Keys: Keyboard Return, Clicker Play, Clicker Left, Clicker Right
+var urls = [];
 var slides_per_show = 5;
 var secs_per_slide = 15;
 var local_images = [
@@ -130,8 +132,32 @@ function shuffle(a) {
         tmp = out[i];
         out[i] = out[j];
         out[j] = tmp;
+        return out;
     }
-    return out;
+}
+
+function setKeyDownEvent() {
+	document.onkeydown = function(e) {
+		if( keys_to_begin.includes(e.keyCode) && urls.length == 0 ) {
+			launchIgnite();
+		}
+	}
+};
+
+function pick5() {
+    var num_images = local_images.length;
+    var indices = [];
+    for(var i=0; i<slides_per_show; i++) {
+        var idx = Math.floor(Math.random() * num_images);
+        while(indices.includes(idx) || idx >= num_images) {
+            idx = Math.floor(Math.random() * num_images);
+        };
+        indices.push(idx);
+    }
+    for(var j=0; j<slides_per_show; j++) {
+        urls.push(local_images[indices[j]]);
+    }
+    return urls;
 }
 
 function showSplash() {
@@ -185,4 +211,4 @@ function launchIgnite() {
 }
 
 showSplash();
-
+setKeyDownEvent();
