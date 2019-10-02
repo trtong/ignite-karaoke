@@ -140,11 +140,11 @@ function shuffle(a) {
 }
 
 function setKeyDownEvent() {
-	document.onkeydown = function(e) {
-		if( keys_to_begin.includes(e.keyCode) && urls.length == 0 ) {
+	$(document).on("keydown", function(e) {
+		if (keys_to_begin.includes(e.keyCode)) {
 			launchIgnite();
 		}
-	}
+	});
 };
 
 function pick5() {
@@ -187,7 +187,7 @@ function showSplash() {
 function showSlide(urls, returnToSplash) {
     if (urls.length == 0) {
         if (returnToSplash) {
-            showSplash();
+            initialize();
         }
         return;
     }
@@ -212,6 +212,7 @@ function showSlide(urls, returnToSplash) {
 var shuffled = [];
 
 function launchIgnite() {
+    $(document).off("keydown");
     var showSlides = function(returnToSplash) {
         if (shuffled.length < slides_per_show) {
             shuffled = shuffle(local_images);
@@ -232,7 +233,7 @@ function launchIgnite() {
 
 function showPresenterSlides(names, showSlideFn) {
     if (names.length == 0) {
-        showSplash();
+        initialize();
         return;
     }
     var currentPresenter = names.shift();
@@ -307,5 +308,9 @@ function removePresenter(index) {
     showPresenters();
 }
 
-showSplash();
-setKeyDownEvent();
+function initialize() {
+    showSplash();
+    setKeyDownEvent();
+}
+
+initialize();
