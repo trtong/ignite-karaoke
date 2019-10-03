@@ -176,6 +176,8 @@ function showSplash() {
         "  <p><a class='btn btn-sm btn-info' href='#' role='button' onClick='showPresenters();'>Setup presenters</a></p>" +
         "</div></div>" +
         "<div class='ignitelogo'></div>");
+
+    setKeyDownEvent();
 };
 
 /**
@@ -187,7 +189,7 @@ function showSplash() {
 function showSlide(urls, returnToSplash) {
     if (urls.length == 0) {
         if (returnToSplash) {
-            initialize();
+            showSplash();
         }
         return;
     }
@@ -233,7 +235,7 @@ function launchIgnite() {
 
 function showPresenterSlides(names, showSlideFn) {
     if (names.length == 0) {
-        initialize();
+        showSplash();
         return;
     }
     var currentPresenter = names.shift();
@@ -263,6 +265,7 @@ function introducePresenter(name) {
 };
 
 function showPresenters() {
+    $(document).off("keydown");
     $("#content").html(
         "<div class='container'>" +
         "  <div class='jumbotron'>" +
@@ -308,9 +311,4 @@ function removePresenter(index) {
     showPresenters();
 }
 
-function initialize() {
-    showSplash();
-    setKeyDownEvent();
-}
-
-initialize();
+showSplash();
