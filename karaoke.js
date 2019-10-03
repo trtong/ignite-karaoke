@@ -24,7 +24,7 @@
 var keys_to_begin = [13, 27, 33, 34]; // Keys: Keyboard Return, Clicker Play, Clicker Left, Clicker Right
 var urls = [];
 var slides_per_show = 5;
-var secs_per_slide = 2;
+var secs_per_slide = 15;
 var secs_per_introduction = 3;
 var local_images = [
     "./imgs/contortionist.jpg",
@@ -224,14 +224,19 @@ function showPresenterSlides(names, showSlideFn) {
     }
     var currentPresenter = names.shift();
     introducePresenter(currentPresenter);
-    
-    // Display countdown
-    for(let i=1; i<=secs_per_introduction; i++) {
-        setTimeout(function(){ $("#countdown").text(i); }, (secs_per_introduction - i) * 1000)
-    }
 
-    setTimeout(function() { showSlideFn(false); }, secs_per_introduction * 1000);
-    setTimeout(function() { showPresenterSlides(names, showSlideFn); }, (secs_per_introduction + (slides_per_show * secs_per_slide)) * 1000);
+    $(document).on("keydown", function(e) {
+        if (keys_to_begin.includes(e.keyCode)) {
+            $(document).off("keydown");
+            // Display countdown
+            for(let i=1; i<=secs_per_introduction; i++) {
+                setTimeout(function(){ $("#countdown").text(i); }, (secs_per_introduction - i) * 1000)
+            }
+
+            setTimeout(function() { showSlideFn(false); }, secs_per_introduction * 1000);
+            setTimeout(function() { showPresenterSlides(names, showSlideFn); }, (secs_per_introduction + (slides_per_show * secs_per_slide)) * 1000);
+        }
+    });
 };
 
 function introducePresenter(name) {
